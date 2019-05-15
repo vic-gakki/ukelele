@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ukelele compose rendered on server side</title>
+	<style>
+		body {
+			margin: 0;
+		}
+		p {
+			margin: 0;
+		}
+		.compose {
+			width: <%= containerWidth%>px;
+			margin: 80px auto;
+		}
+		.header {
+			text-align: center;
+			font-size: 28px;
+			font-weight: 700;
+			padding-bottom: 20px;
+		}
+		.beat {
+			margin-top: 10px;
+			width: 60px;
+			height: 60px;
+			position: relative;
+			font-size: 30px;
+		}
+		.beat-num,
+		.beat-note {
+			position: absolute;
+		}
+		.beat-num {
+			top: -8px;
+    	left: 15px;
+		}
+		.beat-note {
+			right: 12px;
+    	top: 30px;
+		}
+		.beat:after {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 2px;
+			background-color: #000;
+			transform: translateY(29px) rotate(315deg);
+		}
+		.row {
+			height: 47px;
+			position: relative;
+			background: linear-gradient(to bottom, #fff 32.33%, #ccc 32.33%, #ccc 34.33%, #fff 34.33%, #fff 65.66%, #ccc 65.66%, #ccc 67.66%, #fff 67.66%);
+			margin-bottom: 60px;
+			border-top: 1px solid #ccc;
+			border-bottom: 1px solid #ccc;
+		}
+		.seperator {
+			position: absolute;
+			height: 100%;
+			width: 2px;
+			background-color: {{ seperatorColor }};
+			top: 0;
+		}
+		.note {
+			display: inline-block;
+			font-size: 14px;
+			line-height: 1;
+			min-height: 14px;
+			background-color: #fff;
+			position: absolute;
+		}
+		.note-after {
+			background-color: #ddd;
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			width: 1px;
+		}
+	</style>
+</head>
+<body>
+	<div class="compose" data-reference="<%= assistantHeight%>">
+		<div class="header">
+			<p class="title">{{title}}</p>
+			<p class="beat">
+				<span class="beat-num">{{num}}</span>
+				<span class="beat-note">{{note}}</span>
+			</p>
+		</div>
+		<% let cut = 0, writeArr = compose.slice(0), len = writeArr.length, reference, beatPos = 0, left, i, curr, spanAfterHeight, topOffset%>
+		<% outer:while(len > 0){ %>
+			<% left = 0, i = 0 %>
+			<div class="row">
+				<% for(; i < len; i++){ %>
+					<% curr = writeArr[i]; left += curr.isHalf ? offset / 4 : offset / 2 %>
+					<% if(left >= containerWidth){ %>
+						</div>
+						<% writeArr = writeArr.slice(i); len = writeArr.length; cut += i; continue outer%>
+					<% } %>
+					<% if(curr.isEmpty){ %>
+						<% curr.string = 3; curr.flats = '♫' %>
+					<% } %>
+					<% reference = curr; topOffset = ((curr.string - 1 ) * 100/3).toFixed(2) + '% - 7px' %>
+					<% if(curr.isExtend){ %>
+						<% reference = writeArr[i - 1] ? writeArr[i - 1] : compose[cut - 1] %>
+					<% } %>
+					<% topOffset = ((reference.string - 1 ) * 100/3).toFixed(2) + '% - 7px' %>
+					<span class="note" style="top: calc(<%= topOffset%>); left: <%= left %>px">
+						<%= curr.flats%>
+						<span class="note-after" data-type="<%= curr.isHalf ? 'halfB' : 'oneB' %>"></span>
+					</span>
+					<% left += curr.isHalf ? offset / 4 : offset / 2; left = left > containerWidth ? containerWidth : left; beatPos += curr.isHalf ? 0.5 : 1%>
+					<% if(beatPos === num){ %>
+						<% beatPos = 0%>
+						<div class="seperator" style="left: <%= left%>px"></div>
+					<% } %>
+				<% } %>
+				<% len = 0 %>
+			</div>
+		<% } %>
+	</div>
+	<script type="text/javascript" src="./lib/jquery-1.12.4.js"></script>
+	<script>
+		$.each($('.note-after'), function(index, ele){
+			let $ele = $(ele),
+					type = $ele.data('type')
+					reference = $('.compose').data('reference')
+					$span = $ele.parents('.note')
+					$row = $ele.parents('.row')
+					height = $row.get(0).getBoundingClientRect().bottom - $span.get(0).getBoundingClientRect().bottom + (type === 'oneB' ? reference : reference / 2)
+			$ele.css('height', height + 'px')
+		})
+	</script>
+</body>
+</html>

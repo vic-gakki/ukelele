@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ukelele compose</title>
+	<style>
+		p {
+			margin: 0;
+		}
+		.compose {
+			width: 1000px;
+			margin: 0 auto;
+		}
+		.header {
+			text-align: center;
+			font-size: 28px;
+			font-weight: 700;
+			padding-bottom: 20px;
+		}
+		.beat {
+			margin-top: 10px;
+			width: 60px;
+			height: 60px;
+			position: relative;
+			font-size: 30px;
+		}
+		.beat-num,
+		.beat-note {
+			position: absolute;
+		}
+		.beat-num {
+			top: -8px;
+    	left: 15px;
+		}
+		.beat-note {
+			right: 12px;
+    	top: 30px;
+		}
+		.beat:after {
+			content: '';
+			display: block;
+			width: 100%;
+			height: 2px;
+			background-color: #000;
+			transform: translateY(29px) rotate(315deg);
+		}
+		.row {
+			height: 47px;
+			position: relative;
+			background: linear-gradient(to bottom, #fff 32.33%, #ccc 32.33%, #ccc 34.33%, #fff 34.33%, #fff 65.66%, #ccc 65.66%, #ccc 67.66%, #fff 67.66%);
+			margin-bottom: 60px;
+			border-top: 1px solid #ccc;
+			border-bottom: 1px solid #ccc;
+		}
+		.seperator {
+			position: absolute;
+			height: 100%;
+			width: 2px;
+			background-color: #f10215;
+			top: 0;
+		}
+		.note {
+			display: inline-block;
+			font-size: 14px;
+			line-height: 1;
+			min-height: 14px;
+			background-color: #fff;
+			position: absolute;
+		}
+		.note-after {
+			background-color: #ddd;
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			width: 1px;
+		}
+	</style>
+</head>
+<body>
+	<div class="compose">
+		
+	</div>
+	<script type="text/javascript" src="../lib/jquery-1.12.4.js"></script>
+	<script>
+		let compose = [
+			{string: 4, flats: '2'},
+			{string: 1, flats: '3'},
+			{string: 2, flats: '3'},
+			{string: 3, flats: '3'},
+			{string: 1, flats: '1'},
+			{string: 1, flats: '3', isHalf: true},
+			{string: 2, flats: '2', isHalf: true},
+			{string: 4, flats: '3'},
+			{string: 1, flats: '4'},
+			{string: 1, flats: '~', isExtend: true},
+			{string: 4, flats: '1'},
+			{string: 1, flats: '3'},
+			{string: 4, flats: '2'},
+			{string: 1, flats: '3'},
+			{string: 2, flats: '3'},
+			{string: 3, flats: '3'},
+			{string: 1, flats: '1'},
+			{string: 1, flats: '3', isHalf: true},
+			{string: 2, flats: '2', isHalf: true},
+			{string: 4, flats: '3'},
+			{string: 1, flats: '4'},
+			{string: 1, flats: '~', isExtend: true},
+			{string: 4, flats: '1'},
+			{string: 1, flats: '3'},
+			{string: 4, flats: '2'},
+			{string: 1, flats: '3'},
+			{isEmpty: true},
+			{string: 2, flats: '3'},
+			{string: 3, flats: '3'},
+			{string: 1, flats: '1'},
+			{string: 1, flats: '3', isHalf: true},
+			{string: 2, flats: '2', isHalf: true},
+			{string: 4, flats: '3'},
+			{string: 1, flats: '4'},
+			{string: 1, flats: '~', isExtend: true},
+			{string: 4, flats: '1'},
+			{string: 1, flats: '3'},
+			{string: 4, flats: '2'},
+			{string: 1, flats: '3'},
+			{string: 2, flats: '3'},
+			{string: 3, flats: '3'},
+			{string: 1, flats: '1'},
+			{string: 1, flats: '3', isHalf: true},
+			{string: 2, flats: '2', isHalf: true},
+			{string: 4, flats: '3'},
+			{string: 1, flats: '4'},
+			{string: 1, flats: '~', isExtend: true},
+			{string: 4, flats: '1'},
+			{string: 1, flats: '3'}
+		]
+		function Compose(options){
+			this.composeArr = options.compose
+			this.container = options.container instanceof jQuery ? options.container : $(options.container)
+			this.offset = options.offset || 100
+			this.beat = options.beat
+			this.title = options.title
+			this.width = this.container.width()
+		}
+
+		Compose.prototype = {
+			init(){
+				let $header = $('<div class="header"></div>'),
+						$title = $('<p class="title"></p>'),
+						$beat = $('<p class="beat"></p>'),
+						$num = $('<span class="beat-num"></span>'),
+						$note = $('<span class="beat-note"></span>')
+				$title.text(this.title)
+				$num.text(this.beat.num)
+				$note.text(this.beat.note)
+				$beat.append($num).append($note)
+				$header.append($title).append($beat)
+				this.container.append($header)
+				this.compose()
+			},
+			compose(){
+				let left, 
+							i,  
+							curr,
+							$row,
+							rowDisToTop,
+							$span,
+							$spanAfter,
+							$seperator,
+							spanDisToTop,
+							spanAfterHeight,
+							topOffset, 
+							cut = 0,
+							writeArr = this.composeArr.slice(0),
+							len = writeArr.length,
+							beatPos = 0
+				outer: while(len > 0){
+					//重置参数值
+					left = 0
+					i = 0	
+					$row = $('<div class="row"></div>')
+
+					this.container.append($row)
+					rowDisToTop = $row.get(0).getBoundingClientRect().bottom
+					for(; i < len; i++){
+						curr = writeArr[i]
+						left += curr.isHalf ? this.offset / 4 : this.offset / 2
+
+						// 如果该音符的left大于容器的宽度，重新开始下一行
+						if(left >= this.width){
+							writeArr = writeArr.slice(i)
+							len = writeArr.length
+							cut += i
+							continue outer
+						}
+
+						$span = $('<span class="note"></span>')
+						$spanAfter = $('<span class="note-after"></span>')
+
+						//判断是否为空
+						if(curr.isEmpty){
+							curr.string = 3
+							curr.flats = '♫'
+						}
+
+						$span.text(curr.flats)
+						topOffset = ((curr.string - 1 ) * 1/3 * 100).toFixed(2) + '% - 7px'
+
+						// 判断是否为延音
+						if(curr.isExtend){
+							let before = writeArr[i - 1] ? writeArr[i - 1] : this.composeArr[cut - 1]
+							topOffset = ((before.string - 1 ) * 1/3 * 100).toFixed(2) + '% - 7px'
+						}
+
+						$span.css({top: 'calc(' + topOffset + ')', left: left + 'px'})
+						$row.append($span)
+						$span.append($spanAfter)
+						spanDisToTop = $span[0].getBoundingClientRect().bottom
+						spanAfterHeight = rowDisToTop - spanDisToTop
+						if(!curr.isHalf){
+							spanAfterHeight += 30
+						}else {
+							spanAfterHeight += 15
+						}
+						$spanAfter.css({height: spanAfterHeight + 'px'})					
+						left += curr.isHalf ? this.offset / 4 : this.offset / 2
+
+						// 分小节
+						beatPos += curr.isHalf ? 0.5 : 1
+						if(beatPos === this.beat.num){
+							beatPos = 0
+							left = left > this.width ? this.width : left
+							$seperator = $('<div class="seperator"></div>')
+							$row.append($seperator)
+							$seperator.css({left: left + 'px'})
+						}
+					}
+					len = 0
+				}
+			}
+		}
+		Compose.prototype.constructor = Compose
+
+		let com = new Compose({compose, container: $('.compose'), beat: {note: 4, num: 3}, title: '生日快乐'})
+		com.init()
+	</script>
+</body>
+</html>
