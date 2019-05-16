@@ -18,7 +18,7 @@ const router = app => {
 		})
 	})
 	app.get('/compose', (req, res) => {
-		
+		res.render('compose.html')
 	})
 	app.get('/testmysql', (req, res) => {
 		music.show('select * from music').then(result => {
