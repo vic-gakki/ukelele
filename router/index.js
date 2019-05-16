@@ -4,6 +4,15 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 const jsonParser = bodyParser.json()
 const router = app => {
 	app.get('', (req, res) => {
+		res.redirect('/home')
+	})
+	app.get('/home', (req, res) => {
+
+	})
+	app.get('/compose', (req, res) => {
+		
+	})
+	app.get('/testmysql', (req, res) => {
 		music.show('select * from music').then(result => {
 			res.send(result[0])
 		})
@@ -11,13 +20,13 @@ const router = app => {
 			console.log(err)
 		})
 	})
-	app.get('/test', (req, res) => {
+	app.get('/sample', (req, res) => {
 		res.render('ssrCompose.html', {
 			title: '生日快乐',
-			num: 3,
-			note: 4,
-			count: 3,
+			beatNum: 3,
+			beatMelody: 4,
 			containerWidth: 1000,
+			rowMargin: 60,
 			compose: [
 				{string: 4, flats: '2'},
 				{string: 1, flats: '3'},
@@ -54,7 +63,7 @@ const router = app => {
 				{string: 2, flats: '2', isHalf: true},
 				{string: 4, flats: '3'},
 				{string: 1, flats: '4'},
-				{string: 1, flats: '~', isExtend: true},
+				{flats: '~', isExtend: true},
 				{string: 4, flats: '1'},
 				{string: 1, flats: '3'},
 				{string: 4, flats: '2'},
@@ -66,13 +75,13 @@ const router = app => {
 				{string: 2, flats: '2', isHalf: true},
 				{string: 4, flats: '3'},
 				{string: 1, flats: '4'},
-				{string: 1, flats: '~', isExtend: true},
+				{flats: '~', isExtend: true},
 				{string: 4, flats: '1'},
 				{string: 1, flats: '3'}
 			],
-			offset: 100,
+			melodyOffset: 100,
 			assistantHeight: 30,
-			seperatorColor: '#f10215'
+			seperatorColor: 'rgba(0, 0, 0, .6)'
 		})
 	})
 }

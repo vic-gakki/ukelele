@@ -6,19 +6,39 @@
 	<style>
 		body {
 			margin: 0;
+			background: url('/image/bg.jpg');
 		}
 		p {
 			margin: 0;
 		}
+		.right-bg,
+		.left-bg {
+			width: 150px;
+			height: 150px;
+			position: fixed;
+			bottom: 50px;
+			background: url('/image/bilibili.png');
+		}
+		.right-bg {
+			right: 10px;
+			background-position: -308px 0;
+		}
+		.left-bg {
+			left: 10px;
+			background-position: -20px 0
+		}
 		.compose {
-			width: <%= containerWidth%>px;
+			width: {{ containerWidth }}px;
 			margin: 80px auto;
+			background-color: #fff;
+			padding-bottom: {{ rowMargin }}px;
 		}
 		.header {
 			text-align: center;
-			font-size: 28px;
+			font-size: 40px;
 			font-weight: 700;
 			padding-bottom: 20px;
+			font-family: "STXingkai","KaiTi";
 		}
 		.beat {
 			margin-top: 10px;
@@ -51,9 +71,12 @@
 			height: 47px;
 			position: relative;
 			background: linear-gradient(to bottom, #fff 32.33%, #ccc 32.33%, #ccc 34.33%, #fff 34.33%, #fff 65.66%, #ccc 65.66%, #ccc 67.66%, #fff 67.66%);
-			margin-bottom: 60px;
+			margin-bottom: {{ rowMargin }}px;
 			border-top: 1px solid #ccc;
 			border-bottom: 1px solid #ccc;
+		}
+		.row:last-child {
+			margin-bottom: 0;
 		}
 		.seperator {
 			position: absolute;
@@ -67,7 +90,7 @@
 			font-size: 14px;
 			line-height: 1;
 			min-height: 14px;
-			background-color: #fff;
+			background-color: transparent;
 			position: absolute;
 		}
 		.note-after {
@@ -80,12 +103,16 @@
 	</style>
 </head>
 <body>
+	<div class="fixed-bg">
+		<div class="right-bg"></div>
+		<div class="left-bg"></div>
+	</div>
 	<div class="compose" data-reference="<%= assistantHeight%>">
 		<div class="header">
 			<p class="title">{{title}}</p>
 			<p class="beat">
-				<span class="beat-num">{{num}}</span>
-				<span class="beat-note">{{note}}</span>
+				<span class="beat-num">{{beatNum}}</span>
+				<span class="beat-note">{{beatMelody}}</span>
 			</p>
 		</div>
 		<% let cut = 0, writeArr = compose.slice(0), len = writeArr.length, reference, beatPos = 0, left, i, curr, spanAfterHeight, topOffset%>
@@ -93,7 +120,7 @@
 			<% left = 0, i = 0 %>
 			<div class="row">
 				<% for(; i < len; i++){ %>
-					<% curr = writeArr[i]; left += curr.isHalf ? offset / 4 : offset / 2 %>
+					<% curr = writeArr[i]; left += curr.isHalf ? melodyOffset / 4 : melodyOffset / 2 %>
 					<% if(left >= containerWidth){ %>
 						</div>
 						<% writeArr = writeArr.slice(i); len = writeArr.length; cut += i; continue outer%>
@@ -110,8 +137,8 @@
 						<%= curr.flats%>
 						<span class="note-after" data-type="<%= curr.isHalf ? 'halfB' : 'oneB' %>"></span>
 					</span>
-					<% left += curr.isHalf ? offset / 4 : offset / 2; left = left > containerWidth ? containerWidth : left; beatPos += curr.isHalf ? 0.5 : 1%>
-					<% if(beatPos === num){ %>
+					<% left += curr.isHalf ? melodyOffset / 4 : melodyOffset / 2; left = left > containerWidth ? containerWidth : left; beatPos += curr.isHalf ? 0.5 : 1%>
+					<% if(beatPos === beatNum){ %>
 						<% beatPos = 0%>
 						<div class="seperator" style="left: <%= left%>px"></div>
 					<% } %>
@@ -120,7 +147,7 @@
 			</div>
 		<% } %>
 	</div>
-	<script type="text/javascript" src="./lib/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="/lib/jquery-1.12.4.js"></script>
 	<script>
 		$.each($('.note-after'), function(index, ele){
 			let $ele = $(ele),
