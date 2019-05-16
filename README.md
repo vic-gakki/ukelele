@@ -1,10 +1,10 @@
-# install database migrate package
+## install database migrate package
 > `npm install -g db-migrate`
-# install corresponding database package(take `mysql` as example)
+## install corresponding database package(take mysql as example)
 > `npm install db-migrate-mysql`
-# migrate table structure
+## migrate table structure
 > `db-migrate up`
-# install dependencies
+## install dependencies
 > `npm install`
-# start server
+## start server
 > `node compose.js`

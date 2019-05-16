@@ -7,14 +7,22 @@ const router = app => {
 		res.redirect('/home')
 	})
 	app.get('/home', (req, res) => {
-
+		music.show(['*', 'music']).then(result => {
+			console.log(result.length)
+			res.render('home.html', {
+				result
+			})
+		})
+		.catch(err => {
+			console.log(err)
+		})
 	})
 	app.get('/compose', (req, res) => {
 		
 	})
 	app.get('/testmysql', (req, res) => {
 		music.show('select * from music').then(result => {
-			res.send(result[0])
+			res.send(result)
 		})
 		.catch(err => {
 			console.log(err)
