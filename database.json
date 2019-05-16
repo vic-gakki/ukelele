@@ -1,0 +1,10 @@
+{
+	"dev": {
+		"host": "localhost",
+	    "user": "root",
+	    "password" : "gakki",
+	    "database": "compose",
+	    "driver": "mysql",
+	    "multipleStatements": true
+	}
+}
