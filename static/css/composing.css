@@ -1,3 +1,16 @@
+.compose-wrapper {
+	padding: 10px 15px 0 15px;
+}
+.compose-header-wrapper .horizontal {
+	flex: 0 0 25%;
+}
+.header-wrapper-first, 
+.header-wrapper-last {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	padding-bottom: 30px;
+}
 .row {
 	margin-bottom: 20px;
 	display: flex;
@@ -36,10 +49,8 @@
 	text-align: center
 }
 
-.flat-error {
-	top: 3px;
-}
-.compose-header {
+
+.compose-label {
 	margin-bottom: 5px;
 }
 .note-menu {
@@ -48,4 +59,26 @@
 	display: none;
 	border: 1px solid #ccc;
 	font-size: 12px;
+}
+.submit-wrapper {
+	text-align: center;
+}
+.message-title {
+	padding: 50px 0;
+  font-size: 40px;
+}
+.message-content {
+	margin-top: 20px;
+}
+.error-message {
+	color: #fde2e2;
+}
+.warning-message {
+	color: #e6a23c;
+}
+.success-message {
+	color: #67c23a;
+}
+.info-message {
+	color: #edf2fc;
 }

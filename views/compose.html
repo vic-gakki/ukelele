@@ -1,42 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Add Ukelele Sheet</title>
-	<link rel="stylesheet" type="text/css" href="/css/common.css">
+{{ extend './base.html' }}
+
+{{ block 'title' }}Add Ukelele Sheet{{ /block }}
+
+{{ block 'head' }}
 	<link rel="stylesheet" type="text/css" href="/css/composing.css">
-</head>
-<body>
-	<div class="compose-title horizontal">
-		<label for="titleInput">Title: <input id="titleInput" class="title-input s-large-input" type="text"></label>
-	</div>
-	<div class="compose-beat horizontal">
-		<label for="beatInput">Beat: <input id="beatInput" class="beat-input medium-input" type="text" placeholder="num / note"></label>
-	</div>
-	<div class="compose-container horizontal">
-		<label for="widthInput">Container Width: <input id="widthInput" class="width-input medium-input" type="text"></label>
-	</div>
-	<div class="compose-seperaotr horizontal">
-		<label for="colorInput">Seperator Color: <input id="colorInput" class="color-input s-large-input" type="text" placeholder="rgba(red, green, blue, alpha)"></label>
-	</div>
-	<div class="compose-melody horizontal">
-		<label for="melodyInput">Melody Offset: <input id="melodyInput" class="melody-input medium-input" type="text"></label>
-	</div>
-	<div class="compose-assistant horizontal">
-		<label for="assistantInput">Assistant Height: <input id="assistantInput" class="assistant-input medium-input" type="text"></label>
-	</div>
-	<div class="compose-row horizontal">
-		<label for="rowInput">Row Margin: <input id="rowInput" class="row-input medium-input" type="text"></label>
-	</div>
-	<div class='count-flat horizontal'>
-		<label for="flatInput">Max Flats: <input id="flatInput" class="flat-input small-input" title="最大值:15"></label>
-		<span class='error flat-error'></span>
-	</div>
-	<div class="diy-compose">
-		<p class="compose-header">Compose Begin:</p>
-		<div class="row">
-			
-		</div>	
+{{ /block }}
+
+{{ block 'content' }}
+	<div class="compose-wrapper">
+		<div class="compose-header-wrapper">
+			<div class="header-wrapper-first">
+				<div class="compose-title horizontal">
+					<label for="titleInput" class="required">Title: <input id="titleInput" class="title-input s-large-input" type="text"></label>
+					<p class='error title-error'></p>
+				</div>
+				<div class="compose-beat horizontal">
+					<label for="beatInput" class="required">Beat: <input id="beatInput" class="beat-input medium-input" type="text" placeholder="num / note"></label><p class='error beat-error'></p>
+				</div>
+				<div class="compose-container horizontal">
+					<label for="widthInput">Container Width: <input id="widthInput" class="width-input large-input" type="text" placeholder="reference: 600~1200"></label><p class='error width-error'></p>
+				</div>
+				<div class="compose-seperaotr horizontal">
+					<label for="colorInput">Seperator Color: <input id="colorInput" class="color-input s-large-input" type="text" placeholder="rgb或rgba格式"></label><p class='error color-error'></p>
+				</div>
+			</div>
+			<div class="header-wrapper-last">
+				<div class='count-flat horizontal'>
+					<label for="flatInput" class="required">Max Flats: <input id="flatInput" class="flat-input small-input" title="最大值:15"></label>
+					<p class='error flat-error'></p>
+				</div>
+				<div class="compose-melody horizontal">
+					<label for="melodyInput">Melody Offset: <input id="melodyInput" class="melody-input large-input" type="text" placeholder="reference: 100~200"></label><p class='error offset-error'></p>
+				</div>
+				<div class="compose-assistant horizontal">
+					<label for="assistantInput">Assistant Height: <input id="assistantInput" class="assistant-input large-input" type="text" placeholder="reference: 30~60"></label><p class='error height-error'></p>
+				</div>
+				<div class="compose-row horizontal">
+					<label for="rowInput">Row Margin: <input id="rowInput" class="row-input large-input" type="text" placeholder="reference: 60~100"></label><p class='error margin-error'></p>
+				</div>
+			</div>
+		</div>
+		<div class="diy-compose">
+			<p class="compose-label">Compose Begin:</p>
+			<div class="row"></div>	
+		</div>
+		<div class="submit-wrapper">
+			<a href="javascript:;" class="btn-confirm btn-submit">Done</a> 
+		</div>
 	</div>
 	<div id="noteMenu" class="note-menu">
 		<ul>
@@ -44,21 +54,9 @@
 			<li>删除</li>
 		</ul>
 	</div>
-	<div class="prompt">
-		<div class="prompt-content">
-			<p class="prompt-title">
-				提示
-				<span class='cancel-symbol' title='关闭'>×</span>
-			</p>
-			<p class="prompt-text"></p>
-			<div class="prompt-btn-groups">
-				<a href="javascript:;" class='btn-confirm'>确定</a>
-				<a href="javascript:;" class='btn-cancel'>取消</a>
-			</div>
-		</div>
-	</div>
-	<script src="/lib/jquery-1.12.4.js"></script>
+{{ /block }}
+
+{{ block 'script' }}
 	<script type="text/javascript" src="/js/common.js"></script>
 	<script src="/js/composing.js"></script>
-</body>
-</html>
+{{ /block }}

@@ -10,7 +10,7 @@
 <body>
 	{{block 'content'}}
 	{{/block}}
-	<div class="prompt">
+	<div class="prompt" id="confirmBox">
 		<div class="prompt-content">
 			<p class="prompt-title">
 				提示
@@ -21,6 +21,12 @@
 				<a href="javascript:;" class='btn-confirm'>确定</a>
 				<a href="javascript:;" class='btn-cancel'>取消</a>
 			</div>
+		</div>
+	</div>
+	<div class="prompt" id="messageBox">
+		<div class="prompt-content">
+			<p class="message-title">提示</p>
+			<p class="message-content">不能为空</p>
 		</div>
 	</div>
 		<script src="/lib/jquery-1.12.4.js"></script>

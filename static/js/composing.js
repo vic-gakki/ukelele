@@ -11,7 +11,8 @@
 						'contextmenu': handleContextMenu,
 						'click': stop
 					}
-				}
+				},
+				errorMsg = {}
 	// 根据点击位置显示select，隐藏其他
 	function handleClick(event){
 		layerY = event.originalEvent.layerY
@@ -76,13 +77,29 @@
 	}
 
 	function handleAddRemove(res){
-		let { target, operation } = res
+		let { target, operation } = res,
+				currentRowLeft = target.parent().nextAll(),
+				leftRowContainer = target.parents('.row').nextAll().children(),
+				allLeft = [...currentRowLeft, ...leftRowContainer],
+				count
 		if(operation === '添加'){
 			let $firstRow = $('.row:first'),
-					$lastRow = $('.row:last')
-			let cloneSelectContainer = $($firstRow.find('.select-container:first').get(0).cloneNode(true)),
-					lastRowSelectNum = $lastRow.find('.select-container').length + 1
+					$lastRow = $('.row:last'),
+					cloneSelectContainer = $($firstRow.find('.select-container:first').get(0).cloneNode(true)),
+					lastRowSelectNum = $lastRow.find('.select-container').length
+			
+			count = allLeft.length - 1
+			// 获取该select框所在行之后的container以及其后行的所有container，倒序赋值。
+			for(; count >= 0; count--){
+				let prev = count === 0 ? target.parent() : $(allLeft[count - 1]), 
+						now = $(allLeft[count]),
+						visSelect = prev.children(':visible')
+						string = visSelect.data('string')
+						value = visSelect.val()
+				now.children().hide().eq(string - 1).val(value).show()
+			}
 			bindNewForNote(cloneSelectContainer, cloneSelectContainer.find('.flat-select').hide())
+			// 如果末行中的容器不满，则在行末添加；否则，创建新行添加，并将之前行末的容器的data-completed置为true
 			if(lastRowSelectNum < num){
 				 $lastRow.append(cloneSelectContainer)
 			}else {
@@ -90,10 +107,53 @@
 				$('.diy-compose').append($('<div class="row"></div>').append(cloneSelectContainer))
 			}
 		}else {
-
-
+			allLeft.unshift(target.parent().get(0))
+			count = allLeft.length
+			let i = 0;
+			for(; i < count - 1; i++){
+				let next = $(allLeft[i + 1]),
+						now = $(allLeft[i]),
+						visSelect = next.children(':visible'),
+						string = visSelect.data('string'),
+						value = visSelect.val()
+				now.children().hide().eq(string - 1).val(value).show()
+			}
+			allLeft[i].children().hide()
 		}
 	}
+
+	function validate(paramArr){
+		let i = 0,
+				len = paramArr.length,
+				curr,
+				val
+		for(; i < len; i++){
+			curr = paramArr[i];
+			(function(curr){
+				$(curr.host).on(curr.event, function(){
+					val = $(this).val().trim()
+					if(curr.reExp.test(val)){
+						$(curr.error).hide().text('')
+						if(errorMsg[curr.host]){
+							delete errorMsg[curr.host]
+						}
+					}else {
+						$(curr.error).text(curr.errMsg).show()
+						errorMsg[curr.host] = curr.errMsg
+					}
+				})
+			})(curr)
+		}
+	}
+	validate([
+		{host: '.title-input', event: 'blur', reExp: /^\S/, error: '.title-error' , errMsg: 'Title can not be empty!' },	
+		{host: '.beat-input', event: 'blur', reExp: /^\d+\s*\/\s*\d+$/, error: '.beat-error' , errMsg: 'Beat format must be num / note' },	
+		{host: '.width-input', event: 'blur', reExp: /^\d+$/, error: '.width-error' , errMsg: 'Container width must be number!' },	
+		{host: '.color-input', event: 'blur', reExp: /^[rR][gG][bB][aA]?\(((25[0-5]|2[0-4][0-9]|1?\d\d?),\s?){2}(25[0-5]|2[0-4][0-9]|1?\d\d?)(,\s)?(0?\.\d|1)?\)$/, error: '.color-error' , errMsg: 'wrong color format.eg:rgba(1,29,255, .1)' },	
+		{host: '.melody-input', event: 'blur', reExp: /^\d+$/, error: '.offset-error' , errMsg: 'Melody offset must be number!' },	
+		{host: '.assistant-input', event: 'blur', reExp: /^\d+$/, error: '.height-error' , errMsg: 'Assistant height must be number!' },	
+		{host: '.row-input', event: 'blur', reExp: /^\d+$/, error: '.margin-error' , errMsg: 'Row margin must be number!' }
+	])
 
 	function stop(event){
 		handleHideMenu()
@@ -136,7 +196,7 @@
 			// $('.select-container').on('click', handleClick)
 			// $('.flat-select').on('contextmenu click', handle_flat_select)
 		}else {
-			displayPrompt('.prompt', '调整品数可能会导致部分音符重绘，请确认此次操作！').then(res => {
+			displayPrompt('#confirmBox', '调整品数可能会导致部分音符重绘，请确认此次操作！').then(res => {
 				$.each($('.flat-select'), function(index, ele){
 					let $ele = $(ele), 
 							val = $ele.val()
@@ -158,7 +218,6 @@
 
 	}
 
-
 	$('.flat-input').on('input change', function(event){
 		let value, type = event.type
 		if(type === 'change'){
@@ -173,11 +232,56 @@
 			value = $(this).val()
 			if(value.trim() === '') return
 			if(value > 15){
-				displayError('.flat-error', true, '品数不能超过15！', true)
+				displayError('.flat-error', true, 'Max length is 15')
+				errorMsg['.flat-error'] = 'Max length is 15'
 			}else {
 				displayError('.flat-error', false)
+				errorMsg['.flat-error'] && delete errorMsg['.flat-error']
 			}
 		}
+	})
+	$('.btn-submit').on('click', function(){
+		// 1. 检测必填项
+		let omitEle, composeArr = [], notes, curr, string, flats, json
+		Array.from($('.required').children('input')).some(item => {
+			if($(item).val().trim() === ''){
+				omitEle = $(item)
+				return true
+			}
+		})
+		if(omitEle){
+			showModal('warning', '提示', '提交前请完成必填信息！')
+			omitEle.focus()
+			return
+		}
+		if(Object.keys(errorMsg).length){
+			showModal('warning', '提示', '请校对填写格式！')
+			console.log(errorMsg)
+			return
+		}
+		notes = $('.flat-select:visible')
+		if(notes.length === 0){
+			return showModal('warning', '提示', '乐谱应至少包含一个音符')
+		}
+		$.each(notes, function(index, ele){
+			json = {}
+			curr = $(ele)
+			flats = curr.val()
+			string = curr.data('string')
+			if(flats === "♫"){
+				json.isEmpty = true
+			}else {
+				if(flats === "︶"){
+					json.isExtend = true
+				}else if(flats.indexOf('½') > -1) {
+					json.isHalf = true
+				} 
+				json.string = string
+				json.flats = flats
+			}
+			composeArr.push(json)
+		})
+		console.log(JSON.stringify(composeArr))
 	})
 	$('body').on('click contextmenu', handleHideMenu)
 })(jQuery)

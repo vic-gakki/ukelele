@@ -31,3 +31,36 @@ function displayPrompt(container, text){
 		$(container).find('.prompt-text').text(text).end().fadeIn()
 	})
 }
+function showModal(type, title, text){
+	let msgBox = $('#messageBox'),
+			titleBox = msgBox.children().children(':first').removeClass().text(title),
+			classList = 'message-title ',
+			timer
+	switch(type){
+		case 'loading':
+			classList += 'info-message'
+			break;
+		case 'success':
+			classList += 'success-message'
+			break;
+		case 'warning':
+			classList += 'warning-message'
+			break;
+		case 'error':
+			classList += 'error-message'
+			break;
+	}
+	titleBox.addClass(classList)
+	text && msgBox.children().children(':last').text(text)
+	if(type === 'close'){
+		msgBox.hide()
+	}else {
+		msgBox.show()
+		if(type !== 'loading'){
+			timer = setTimeout(function(){
+				msgBox.hide()
+				clearTimeout(timer)
+			}, 1000)
+		}
+	}
+}
