@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>{{block 'title'}}{{/block}}</title>
+		<link rel="stylesheet" type="text/css" href="/css/common.css">
+		{{block 'head'}}
+		{{/block}}
+</head>
+<body>
+	{{block 'content'}}
+	{{/block}}
+	<div class="prompt">
+		<div class="prompt-content">
+			<p class="prompt-title">
+				提示
+				<span class='cancel-symbol' title='关闭'>×</span>
+			</p>
+			<p class="prompt-text"></p>
+			<div class="prompt-btn-groups">
+				<a href="javascript:;" class='btn-confirm'>确定</a>
+				<a href="javascript:;" class='btn-cancel'>取消</a>
+			</div>
+		</div>
+	</div>
+		<script src="/lib/jquery-1.12.4.js"></script>
+		{{block 'script'}}
+		{{/block}}
+</body>
+</html>

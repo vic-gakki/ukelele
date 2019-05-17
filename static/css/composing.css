@@ -1,0 +1,51 @@
+.row {
+	margin-bottom: 20px;
+	display: flex;
+}
+.select-container {
+	width: 100px;
+	position: relative;
+	height: 100%;
+	flex-shrink: 0;
+	flex-grow: 0;
+}
+.flat-select {
+	font-size: 16px;
+	border: none;
+	outline: none;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: transparent;
+	display: none;
+}
+.one-lier {
+	top: -8px;
+}
+.two-lier {
+	top: 8px;
+}
+.three-lier {
+	top: 22px;
+}
+.four-lier {
+	top: 39px;
+}
+.flat-input {
+	padding-left: 0;
+	text-align: center
+}
+
+.flat-error {
+	top: 3px;
+}
+.compose-header {
+	margin-bottom: 5px;
+}
+.note-menu {
+	position: absolute;
+	width: 50px;
+	display: none;
+	border: 1px solid #ccc;
+	font-size: 12px;
+}

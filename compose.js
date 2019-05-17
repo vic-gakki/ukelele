@@ -1,8 +1,10 @@
 const express = require('express')
 const router = require('./router')
 const app = express()
-app.use('/lib', express.static('./lib'))
-app.use('/image', express.static('./image'))
+app.use('/lib', express.static('./static/lib'))
+app.use('/image', express.static('./static/image'))
+app.use('/css', express.static('./static/css'))
+app.use('/js', express.static('./static/js'))
 app.engine('html', require('express-art-template'))
 router(app)
 app.listen(3000, () => {

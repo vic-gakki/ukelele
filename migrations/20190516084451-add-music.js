@@ -33,6 +33,10 @@ exports.up = function(db) {
   		type: 'int',
   		defaultValue: 4
   	},
+    relatedMaxFlats: {
+      type: 'int',
+      notNull: true
+    },
   	containerWidth: {
   		type: 'int',
   		defaultValue: 1000

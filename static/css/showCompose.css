@@ -1,0 +1,84 @@
+body {
+	background: url('/image/bg.jpg');
+}
+.right-bg,
+.left-bg {
+	width: 150px;
+	height: 150px;
+	position: fixed;
+	bottom: 50px;
+	background: url('/image/bilibili.png');
+}
+.right-bg {
+	right: 10px;
+	background-position: -308px 0;
+}
+.left-bg {
+	left: 10px;
+	background-position: -20px 0
+}
+.header {
+	text-align: center;
+	font-size: 40px;
+	font-weight: 700;
+	padding-bottom: 20px;
+	font-family: "STXingkai","KaiTi";
+}
+.beat {
+	margin-top: 10px;
+	width: 60px;
+	height: 60px;
+	position: relative;
+	font-size: 30px;
+}
+.beat-num,
+.beat-note {
+	position: absolute;
+}
+.beat-num {
+	top: -8px;
+	left: 15px;
+}
+.beat-note {
+	right: 12px;
+	top: 30px;
+}
+.beat:after {
+	content: '';
+	display: block;
+	width: 100%;
+	height: 2px;
+	background-color: #000;
+	transform: translateY(29px) rotate(315deg);
+}
+.note {
+	display: inline-block;
+	font-size: 14px;
+	line-height: 1;
+	min-height: 14px;
+	background-color: transparent;
+	position: absolute;
+}
+.note-after {
+	background-color: #ddd;
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	width: 1px;
+}
+.seperator {
+	position: absolute;
+	height: 100%;
+	width: 2px;
+	top: 0;
+}
+.row:last-child {
+	margin-bottom: 0;
+}
+.row {
+	position: relative;
+}
+.compose {
+	margin: 80px auto;
+	background-color: #fff;
+}

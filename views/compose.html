@@ -3,182 +3,46 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Add Ukelele Sheet</title>
-	<style>
-		body {
-			margin: 0;
-		}
-		.btn-confirm,
-		.btn-cancel {
-			text-decoration: none;
-			color: #fff;
-			display: inline-block;
-			line-height: 30px;
-			border: 1px solid #fff;
-			padding: 0 15px;
-			border-radius: 4px;
-		}
-		.btn-confirm {
-			border-color: #409eff;
-			background-color: #409eff;
-		}
-		.btn-cancel {
-			border-color: #f56c6c;
-			background-color: #f56c6c;
-		}
-		.btn-confirm:link,
-		.btn-cancel:link {
-
-		}
-		.btn-confirm:visted,
-		.btn-cancel:visted {
-
-		}
-		.btn-confirm:hover,
-		.btn-confirm:focus {
-			background-color: #66b1ff;
-			border-color: #66b1ff;
-		}
-		.btn-confirm:active {
-			background-color: #3a8ee6;
-    	border-color: #3a8ee6;
-		}
-		.btn-cancel:hover,
-		.btn-cancel:focus {
-			background-color: #f78989;
-			border-color: #f78989;
-		}
-		.btn-cancel:active {
-			background-color: #dd6161;
-    	border-color: #dd6161;
-		}
-
-		.row {
-			height: 47px;
-			background: linear-gradient(to bottom, #fff 32.33%, #ccc 32.33%, #ccc 34.33%, #fff 34.33%, #fff 65.66%, #ccc 65.66%, #ccc 67.66%, #fff 67.66%);
-			border-top: 1px solid #ccc;
-			border-bottom: 1px solid #ccc;
-			margin-bottom: 20px;
-			display: flex;
-		}
-		.select-container {
-			width: 100px;
-			position: relative;
-			height: 100%;
-			flex-shrink: 0;
-			flex-grow: 0;
-		}
-		.flat-select {
-			font-size: 16px;
-			border: none;
-			outline: none;
-			position: absolute;
-			left: 50%;
-			transform: translateX(-50%);
-			background-color: transparent;
-			display: none;
-		}
-		.one-lier {
-			top: -8px;
-		}
-		.two-lier {
-			top: 8px;
-		}
-		.three-lier {
-			top: 22px;
-		}
-		.four-lier {
-			top: 39px;
-		}
-		.error {
-			display: none;
-			color: red;
-			position: absolute;
-			margin-left: 30px;
-		}
-		.horizontal {
-			position: relative;
-			margin-bottom: 10px;
-		}
-		.prompt {
-			position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			bottom: 0;
-			background-color: rgba(0, 0, 0, .4);
-			text-align: center;
-			font-size: 0;
-			display: none;
-		}
-		.prompt:before {
-			content: '';
-			display: inline-block;
-			height: 100%;
-			vertical-align: middle;
-		}
-		.prompt-content {
-			position: relative;
-			display: inline-block;
-			vertical-align: middle;
-			background-color: #fff;
-			height: 300px;
-			width: 400px;
-			border-radius: 5px;
-			font-size: 16px;
-		}
-		.prompt-title {
-			font-weight: 700;
-			font-size: 24px;
-			margin: 0;
-			padding: 10px 0;
-			border-bottom: 1px solid #ddd;
-			position: relative;
-		}
-		.prompt-text {
-			padding: 0 20px;
-			line-height: 1.5;
-		}
-		.prompt-text:first-line {
-			text-indent: 2em;
-		}
-		.cancel-symbol {
-	    font-weight: 400;
-	    position: absolute;
-	    width: 20px;
-	    line-height: 20px;
-	    border: 1px solid #ddd;
-	    font-size: 28px;
-	    border-radius: 50%;
-	    top: 2px;
-	    right: 2px;
-	    cursor: pointer;
-	    transition: .5s;
-		}
-		.cancel-symbol:hover {
-			transform: rotate(90deg);
-		}
-		.prompt-btn-groups {
-			border-top: 1px solid #ddd;
-			border-top-right-radius: 3px;
-			border-top-left-radius: 3px;
-			position: absolute;
-			bottom: 10px;
-			padding-top: 10px;
-			width: 100%;
-		}
-		.btn-confirm:first-child {
-			margin-right: 120px;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/css/composing.css">
 </head>
 <body>
+	<div class="compose-title horizontal">
+		<label for="titleInput">Title: <input id="titleInput" class="title-input s-large-input" type="text"></label>
+	</div>
+	<div class="compose-beat horizontal">
+		<label for="beatInput">Beat: <input id="beatInput" class="beat-input medium-input" type="text" placeholder="num / note"></label>
+	</div>
+	<div class="compose-container horizontal">
+		<label for="widthInput">Container Width: <input id="widthInput" class="width-input medium-input" type="text"></label>
+	</div>
+	<div class="compose-seperaotr horizontal">
+		<label for="colorInput">Seperator Color: <input id="colorInput" class="color-input s-large-input" type="text" placeholder="rgba(red, green, blue, alpha)"></label>
+	</div>
+	<div class="compose-melody horizontal">
+		<label for="melodyInput">Melody Offset: <input id="melodyInput" class="melody-input medium-input" type="text"></label>
+	</div>
+	<div class="compose-assistant horizontal">
+		<label for="assistantInput">Assistant Height: <input id="assistantInput" class="assistant-input medium-input" type="text"></label>
+	</div>
+	<div class="compose-row horizontal">
+		<label for="rowInput">Row Margin: <input id="rowInput" class="row-input medium-input" type="text"></label>
+	</div>
 	<div class='count-flat horizontal'>
-		Max Flats:<input type="" name="" class="flat-input"><span class='error flat-error'></span>
+		<label for="flatInput">Max Flats: <input id="flatInput" class="flat-input small-input" title="最大值:15"></label>
+		<span class='error flat-error'></span>
 	</div>
 	<div class="diy-compose">
+		<p class="compose-header">Compose Begin:</p>
 		<div class="row">
 			
 		</div>	
+	</div>
+	<div id="noteMenu" class="note-menu">
+		<ul>
+			<li>添加</li>
+			<li>删除</li>
+		</ul>
 	</div>
 	<div class="prompt">
 		<div class="prompt-content">
@@ -194,130 +58,7 @@
 		</div>
 	</div>
 	<script src="/lib/jquery-1.12.4.js"></script>
-	<script>
-		let $compose = $('.diy-compose'),
-				num = Math.floor($compose.width() / 100),
-				layerY,
-				ele,
-				cloneContainer,
-				count = num
-
-		function handleClick(event){
-			layerY = event.originalEvent.layerY
-			if(layerY < 8){
-				ele = '.one-lier'
-			}else if(layerY < 24){
-				ele = '.two-lier'
-			}else if(layerY < 36){
-				ele = '.three-lier'
-			}else {
-				ele = '.four-lier'
-			}
-			$(this).find('.flat-select').hide().end().find(ele).show()
-			if($(this).next('.select-container').length === 0){
-				cloneContainer = $($(this).get(0).cloneNode(true)).find('.flat-select').hide().on('click', stop).end()
-				$(cloneContainer).on('click', handleClick)
-				if(--count > 0){
-					$(this).parents('.row').append(cloneContainer)
-				}else {
-					count = num
-					$compose.append($('<div class="row"></div>').append(cloneContainer))
-				}
-			}
-		}
-
-		function stop(event){
-			event.stopPropagation()
-		}
-
-		function displayError(container, isShow, text){
-			isShow ? $(container).text(text).show() : $(container).text('').hide()
-		}
-		function displayPrompt(container, text){
-			return new Promise((resolve, reject) => {
-				$(container).off('click').on('click', function(event){
-					let classList = event.target.classList,
-							arr = ['btn-confirm', 'btn-cancel', 'cancel-symbol'],
-							len
-					len = new Set([...classList, ...arr]).size < classList.length + arr.length
-					if(!len) return
-					if(classList.contains('btn-confirm')){
-						resolve('confirm')
-					}else if(classList.contains('btn-cancel')){
-						reject('cancel')
-					}else if(classList.contains('cancel-symbol')){
-						reject('close')
-					}
-					$(container).fadeOut()
-				})
-				$(container).find('.prompt-text').text(text).end().fadeIn()
-			})
-		}
-
-		function reCreate(val, oldV){
-			let optionHtml = '<option>♫</option>', 
-					halflag = '½', 
-					selectClass = ['one-lier', 'two-lier', 'three-lier', 'four-lier'],
-					$container,
-					$select
-			for(let i = 0; i < val; i++){
-				optionHtml += `<option>${i + 1}</option><option>${i + 1} ${ halflag }</option>`
-			}
-			if($('.select-container').length === 0){
-				$container = $('<div class="select-container"></div>')
-				for(let i = 0; i < 4; i++){
-					$select = $('<select class="flat-select '+ selectClass[i] +'"></select>')
-					$select.html(optionHtml)
-					$container.append($select)
-				}
-				$('.row').append($container)
-				$('.select-container').on('click', handleClick)
-				$('.flat-select').on('click', stop)
-			}else {
-				displayPrompt('.prompt', '调整品数可能会导致部分音符重绘，请确认此次操作！').then(res => {
-					$.each($('.flat-select'), function(index, ele){
-						let $ele = $(ele), 
-								val = $ele.val()
-						$ele.html(optionHtml).val(val)
-						if(!$ele.val()){
-							$ele.val('♫')
-						}
-					})
-				})
-				.catch(err => {
-					resetFlatNum(err, oldV)
-				})
-			}
-		}
-		function resetFlatNum(errmsg, value){
-			$('.flat-input').val(value).attr('data-num', value)
-
-		}
-
-
-		$('.flat-input').on('input change', function(event){
-			let value, type = event.type
-			if(type === 'change'){
-				let oldV = $(this).data('num')
-				value = $(this).val()
-				if(!value || value > 15) return
-				if(value == oldV)return
-				$(this).attr('data-num', value)
-				reCreate(value, oldV)
-			}else if(type === 'input'){
-				$(this).val($(this).val().replace(/\D+/g, ''))
-				value = $(this).val()
-				if(value.trim() === '') return
-				if(value > 15){
-					displayError('.flat-error', true, '品数过大，请重新输入！')
-				}else {
-					displayError('.flat-error', false)
-				}
-			}
-		})
-
-		
-
-	</script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	<script src="/js/composing.js"></script>
 </body>
 </html>

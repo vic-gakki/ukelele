@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.test {
+			height: 100px;
+			background-color: cyan;
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+<body>
+	<button id="btn">添加</button>
+	<div class='test'></div>
+	<script src="/lib/jquery-1.12.4.js"></script>
+	<script>
+		$('#btn').on('click', function(){
+			$('body').append($('<div class="test"></div>'))
+		})
+		$('body').on('click', '.test', function(){
+			console.log(this)
+		})
+	</script>
+</body>
+</html>

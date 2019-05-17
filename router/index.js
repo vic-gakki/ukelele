@@ -17,6 +17,9 @@ const router = app => {
 			console.log(err)
 		})
 	})
+	app.get('/test', (req, res) => {
+		res.render('test.html')
+	})
 	app.get('/compose', (req, res) => {
 		res.render('compose.html')
 	})

@@ -1,0 +1,166 @@
+body, p {
+	margin: 0;
+}
+.btn-confirm,
+.btn-cancel {
+	text-decoration: none;
+	color: #fff;
+	display: inline-block;
+	line-height: 30px;
+	border: 1px solid #fff;
+	padding: 0 15px;
+	border-radius: 4px;
+}
+.btn-confirm {
+	border-color: #409eff;
+	background-color: #409eff;
+}
+.btn-cancel {
+	border-color: #f56c6c;
+	background-color: #f56c6c;
+}
+.btn-confirm:link,
+.btn-cancel:link {
+
+}
+.btn-confirm:visted,
+.btn-cancel:visted {
+
+}
+.btn-confirm:hover,
+.btn-confirm:focus {
+	background-color: #66b1ff;
+	border-color: #66b1ff;
+}
+.btn-confirm:active {
+	background-color: #3a8ee6;
+	border-color: #3a8ee6;
+}
+.btn-cancel:hover,
+.btn-cancel:focus {
+	background-color: #f78989;
+	border-color: #f78989;
+}
+.btn-cancel:active {
+	background-color: #dd6161;
+	border-color: #dd6161;
+}
+.row {
+	height: 47px;
+	background: linear-gradient(to bottom, #fff 32.33%, #ccc 32.33%, #ccc 34.33%, #fff 34.33%, #fff 65.66%, #ccc 65.66%, #ccc 67.66%, #fff 67.66%);
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+.error {
+	display: none;
+	color: red;
+	position: absolute;
+	margin-left: 30px;
+	font-size: 14px;
+}
+.horizontal {
+	position: relative;
+	margin-bottom: 10px;
+}
+.prompt {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, .4);
+	text-align: center;
+	font-size: 0;
+	display: none;
+}
+.prompt:before {
+	content: '';
+	display: inline-block;
+	height: 100%;
+	vertical-align: middle;
+}
+.prompt-content {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	background-color: #fff;
+	height: 300px;
+	width: 400px;
+	border-radius: 5px;
+	font-size: 16px;
+}
+.prompt-title {
+	font-weight: 700;
+	font-size: 24px;
+	margin: 0;
+	padding: 10px 0;
+	border-bottom: 1px solid #ddd;
+	position: relative;
+}
+.prompt-text {
+	padding: 0 20px;
+	line-height: 1.5;
+}
+.prompt-text:first-line {
+	text-indent: 2em;
+}
+.cancel-symbol {
+  font-weight: 400;
+  position: absolute;
+  width: 20px;
+  line-height: 20px;
+  border: 1px solid #ddd;
+  font-size: 28px;
+  border-radius: 50%;
+  top: 2px;
+  right: 2px;
+  cursor: pointer;
+  transition: .5s;
+}
+.cancel-symbol:hover {
+	transform: rotate(90deg);
+}
+.prompt-btn-groups {
+	border-top: 1px solid #ddd;
+	border-top-right-radius: 3px;
+	border-top-left-radius: 3px;
+	position: absolute;
+	bottom: 10px;
+	padding-top: 10px;
+	width: 100%;
+}
+.btn-confirm:first-child {
+	margin-right: 120px;
+}
+input {
+	outline: none;
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	padding: 5px 0 5px 8px;
+	box-sizing: border-box;
+}
+.small-input {
+	width: 50px;
+}
+.medium-input {
+	width: 100px;
+}
+.large-input {
+	width: 150px;
+}
+.s-large-input {
+	width: 200px;
+}
+ul, ol {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	background-color: #fff;
+}
+li {
+	padding: 3px 5px;
+	text-align: center;
+}
+li:hover {
+	background-color: cyan;
+}
