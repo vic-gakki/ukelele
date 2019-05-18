@@ -198,6 +198,7 @@
 	async function saveMusic(desData, comData){
 		let desRes = await sendRequest({url: '/postDesc', method: 'POST', data: desData})
 		await sendRequest({url: '/postCompose', method: 'POST', data: {compose: JSON.stringify(comData), music_id: desRes.id}})
+		return desRes.id
 	}
 
 	// 根据品数设置option，如果页面中没有select包含框，生成一个select；如果有，重新生成select的option
@@ -311,11 +312,10 @@
 		showModal('loading', '发送中')
 		saveMusic(data, composeArr).then(res => {
 			showModal('success')
+			location.assign('/displaySheet?id=' + res)
 		}).catch(err => {
 			console.log(err)
 		})
-		// console.log(data)
-		// console.log(JSON.stringify(composeArr))
 	})
 	$('body').on('click contextmenu', handleHideMenu)
 })(jQuery)

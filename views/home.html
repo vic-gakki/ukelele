@@ -22,7 +22,8 @@
 		.music-item a:active {
 			color: rgb(85, 26, 139);
 		}
-		.music-item:hover {
+		.music-item:hover,
+		.add-new:hover {
 			background-color: #fff;
 		}
 		.empty-info {
@@ -31,7 +32,9 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%);
-			
+		}
+		.add-new a {
+			font-size: 24px;
 		}
 	</style>
 {{ /block }}
@@ -49,6 +52,7 @@
 				<% let currMusic = result[i] %>
 				<li class="music-item" data-id="<%= currMusic.mid %>"><a href="/displaySheet?id=<%= currMusic.mid%>"><%= currMusic.title %></a></li>	
 			<% } %>
+				<li class='add-new'><a href="/compose">添加</a></li>
 			</ul>
 		<% } %>
 	</div>
