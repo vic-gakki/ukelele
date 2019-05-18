@@ -9,14 +9,16 @@ const router = app => {
 	})
 	// 首页展示曲子列表
 	app.get('/home', (req, res) => {
-		music.show(['*', 'music']).then(result => {
-			res.render('home.html', {
-				result
-			})
-		})
-		.catch(err => {
-			console.log(err)
-		})
+		// music.show(['*', 'music']).then(result => {
+		// 	res.render('home.html', {
+		// 		result
+		// 	})
+		// })
+		// .catch(err => {
+		// 	console.log(err)
+		// })
+		console.log('enter home')
+		res.send('hello world')
 	})
 
 	// 指定曲子的详情
@@ -32,6 +34,7 @@ const router = app => {
 	
 	// 编曲页
 	app.get('/compose', (req, res) => {
+		console.log('enter compose')
 		res.render('compose.html')
 	})
 	
