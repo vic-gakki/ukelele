@@ -7,6 +7,6 @@ app.use('/css', express.static('./static/css'))
 app.use('/js', express.static('./static/js'))
 app.engine('html', require('express-art-template'))
 router(app)
-app.listen(3000, () => {
+app.listen(8080, () => {
 	console.log('server start!')
 })
