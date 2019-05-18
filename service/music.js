@@ -23,6 +23,18 @@ const show = (...args) => {
 		})
 	})
 }
+const insert = (table, data) => {
+	return new Promise((resolve, reject) => {
+		db.query('insert into ?? (??) values (?)', [table, Object.keys(data), Object.values(data)], (err, results) => {
+			if(err){
+				reject(err)
+			}else {
+				resolve(results)
+			}
+		})
+	})
+}
 module.exports = {
-	show
+	show,
+	insert
 }

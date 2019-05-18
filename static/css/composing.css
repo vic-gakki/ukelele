@@ -48,6 +48,10 @@
 	padding-left: 0;
 	text-align: center
 }
+.legend-notation {
+	color: #67c23a;
+	font-size: 12px;
+}
 
 
 .compose-label {

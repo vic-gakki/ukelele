@@ -1,14 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>xxv's ukelele</title>
-</head>
-<body>
+{{ extend './base.html' }}
+{{ block 'title' }}xxv's ukelele {{ /block }}
+{{ block 'head' }}
+	<style>
+		body {
+			font-family: "STXingkai","KaiTi";
+		}
+		.home-header {
+			font-size: 40px;
+			text-align: center;
+		}
+		.music-item a {
+			text-decoration: none;
+			font-size: 30px;
+			color: #000;
+		}
+		.music-item a:link,
+		.music-item a:visted {
+			
+		}
+		.music-item a:hover,
+		.music-item a:active {
+			color: rgb(85, 26, 139);
+		}
+		.music-item:hover {
+			background-color: #fff;
+		}
+		.empty-info {
+			position: absolute;
+			font-size: 30px;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			
+		}
+	</style>
+{{ /block }}
+
+{{ block 'content' }}
+	<h1 class='home-header'>Welcome to xxv's ukelele</h1>
 	<div class="list-all-music">
-		<% for(let i = 0; i <result.length; i++){ %>
-			<a href="javasript:;"><%= result[i].title %></a href="javasript:;"><br />			
+		<% if(result.length === 0){ %>
+			<p class="empty-info">
+				暂无保存的乐曲~，请前往<a href="/compose">添加</a>
+			</p>
+		<% }else {%>
+			<ul class="music-name-list">
+			<% for(let i = 0; i <result.length; i++){ %>
+				<% let currMusic = result[i] %>
+				<li class="music-item" data-id="<%= currMusic.mid %>"><a href="/displaySheet?id=<%= currMusic.mid%>"><%= currMusic.title %></a></li>	
+			<% } %>
+			</ul>
 		<% } %>
 	</div>
-</body>
-</html>
+{{ /block }}

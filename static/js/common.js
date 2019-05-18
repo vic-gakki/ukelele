@@ -51,7 +51,8 @@ function showModal(type, title, text){
 			break;
 	}
 	titleBox.addClass(classList)
-	text && msgBox.children().children(':last').text(text)
+	text = text ? text : ''
+	msgBox.children().children(':last').text(text)
 	if(type === 'close'){
 		msgBox.hide()
 	}else {
@@ -63,4 +64,31 @@ function showModal(type, title, text){
 			}, 1000)
 		}
 	}
+}
+
+function sendRequest(params){
+	return new Promise((resolve, reject) => {
+		let {
+			url,
+			method,
+			data
+		} = params
+		$.ajax({
+			url,
+			method,
+			data,
+			success(res){
+				if(res.code !== 0){
+					showModal('error', '出错啦', res.message)
+					reject(res.message)
+				}else {
+					resolve(res.data)
+				}
+			},
+			error(err){
+				showModal('error', '出错啦', err.message)
+				reject(err)
+			}
+		})
+	})
 }

@@ -174,9 +174,35 @@
 					console.log(err)
 				})
 	}
+
+	function collectDescription(){
+		let result = $('#musicDescription').serializeArray(),
+				len = result.length,
+				i = 0,
+				curr,
+				data = {}
+		for(; i < len; i++){
+			curr = result[i]
+			if(curr.value.trim() === '') continue
+			if(curr.name === 'beat'){
+				let beatArr = curr.value.split('/')
+				data.beatNum = beatArr[0].trim()
+				data.beatMelody = beatArr[1].trim()
+			}else {
+				data[curr.name] = curr.value.trim()
+			}
+		}
+		return data
+	}
+
+	async function saveMusic(desData, comData){
+		let desRes = await sendRequest({url: '/postDesc', method: 'POST', data: desData})
+		await sendRequest({url: '/postCompose', method: 'POST', data: {compose: JSON.stringify(comData), music_id: desRes.id}})
+	}
+
 	// 根据品数设置option，如果页面中没有select包含框，生成一个select；如果有，重新生成select的option
 	function reCreate(val, oldV){
-		let optionHtml = '<option>♫</option><option>︶</option>', 
+		let optionHtml = '<option>♫</option><option>︶</option><option>0</option>', 
 				halflag = '½', 
 				selectClass = ['one-lier', 'two-lier', 'three-lier', 'four-lier'],
 				$container,
@@ -242,7 +268,7 @@
 	})
 	$('.btn-submit').on('click', function(){
 		// 1. 检测必填项
-		let omitEle, composeArr = [], notes, curr, string, flats, json
+		let omitEle, composeArr = [], notes, curr, string, flats, json, data
 		Array.from($('.required').children('input')).some(item => {
 			if($(item).val().trim() === ''){
 				omitEle = $(item)
@@ -263,6 +289,7 @@
 		if(notes.length === 0){
 			return showModal('warning', '提示', '乐谱应至少包含一个音符')
 		}
+		data = collectDescription()
 		$.each(notes, function(index, ele){
 			json = {}
 			curr = $(ele)
@@ -281,7 +308,14 @@
 			}
 			composeArr.push(json)
 		})
-		console.log(JSON.stringify(composeArr))
+		showModal('loading', '发送中')
+		saveMusic(data, composeArr).then(res => {
+			showModal('success')
+		}).catch(err => {
+			console.log(err)
+		})
+		// console.log(data)
+		// console.log(JSON.stringify(composeArr))
 	})
 	$('body').on('click contextmenu', handleHideMenu)
 })(jQuery)
