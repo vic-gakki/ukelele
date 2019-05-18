@@ -9,7 +9,7 @@ const router = app => {
 	})
 	// 首页展示曲子列表
 	app.get('/home', (req, res) => {
-		music.show(['*', 'music']).then(result => {
+		music.show('select mid, title from music').then(result => {
 			res.render('home.html', {
 				result
 			})
