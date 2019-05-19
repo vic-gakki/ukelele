@@ -77,7 +77,7 @@ function sendRequest(params){
 		$.ajax({
 			url,
 			method,
-			data: additional.contentType.indexOf('json') ? JSON.parse(data) : data,
+			data: additional.contentType.indexOf('json') ? JSON.stringify(data) : data,
 			...additional,
 			success(res){
 				if(res.code !== 0){
