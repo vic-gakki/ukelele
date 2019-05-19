@@ -51,7 +51,7 @@ const router = app => {
 	})
 
 	// 保存曲子音符集
-	app.post('/postCompose', urlencodedParser, (req, res) => {
+	app.post('/postCompose', jsonParser, (req, res) => {
 		music.insert('sheets', req.body).then(result => {
 			res.json({
 				code: 0,
