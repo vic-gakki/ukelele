@@ -71,12 +71,14 @@ function sendRequest(params){
 		let {
 			url,
 			method,
-			data
+			data,
+			header
 		} = params
 		$.ajax({
 			url,
 			method,
 			data,
+			...header,
 			success(res){
 				if(res.code !== 0){
 					showModal('error', '出错啦', res.message)

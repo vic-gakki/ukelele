@@ -36,7 +36,7 @@ const router = app => {
 	})
 	
 	// 保存曲子描述信息
-	app.post('/postDesc', urlencodedParser, (req, res) => {
+	app.post('/postDesc', jsonParser, (req, res) => {
 		music.insert('music', req.body).then(result => {
 			res.json({
 				code: 0,

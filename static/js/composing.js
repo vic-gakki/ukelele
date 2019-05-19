@@ -196,8 +196,10 @@
 	}
 
 	async function saveMusic(desData, comData){
-		let desRes = await sendRequest({url: '/postDesc', method: 'POST', data: desData})
-		await sendRequest({url: '/postCompose', method: 'POST', data: {compose: JSON.stringify(comData), music_id: desRes.id}})
+		let method = 'POST',
+				header = {contentType: 'application/json;charset=utf-8'}
+		let desRes = await sendRequest({url: '/postDesc', method, data: desData, header})
+		await sendRequest({url: '/postCompose', method, data: {compose: JSON.stringify(comData), music_id: desRes.id}, header})
 		return desRes.id
 	}
 
