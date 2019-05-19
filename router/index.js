@@ -23,7 +23,7 @@ const router = app => {
 	app.get('/displaySheet', (req, res) => {
 		music.show('select ?? from ?? as a, ?? as b where a.mstatus = ? and b.sstatus = ? and a.mid = b.music_id and a.mid = ?', [['a.title', 'a.beatNum', 'a.beatMelody', 'a.title', 'a.containerWidth', 'a.seperatorColor', 'a.melodyOffset', 'a.assistantHeight', 'a.rowMargin', 'b.compose'], 'music', 'sheets', 0, 0, req.query.id])
 		.then(results => {
-			if(results.length) return res.redirect('/home')
+			if(!results.length) res.redirect('/home')
 			results[0].compose = JSON.parse(results[0].compose)
 			res.render('ssrCompose.html', results[0])
 		}).catch(err => {
