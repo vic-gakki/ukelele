@@ -72,13 +72,13 @@ function sendRequest(params){
 			url,
 			method,
 			data,
-			header
+			additional
 		} = params
 		$.ajax({
 			url,
 			method,
 			data,
-			...header,
+			...additional,
 			success(res){
 				if(res.code !== 0){
 					showModal('error', '出错啦', res.message)
