@@ -205,13 +205,13 @@
 
 	// 根据品数设置option，如果页面中没有select包含框，生成一个select；如果有，重新生成select的option
 	function reCreate(val, oldV){
-		let optionHtml = '<option>♫</option><option>︶</option><option>0</option>', 
+		let optionHtml = '<option>♫</option><option>︶</option>', 
 				halflag = '½', 
 				selectClass = ['one-lier', 'two-lier', 'three-lier', 'four-lier'],
 				$container,
 				$select
-		for(let i = 0; i < val; i++){
-			optionHtml += `<option>${i + 1}</option><option>${i + 1} ${ halflag }</option>`
+		for(let i = 0; i <= val; i++){
+			optionHtml += `<option>${ i }</option><option>${ i } ${ halflag }</option>`
 		}
 		if($('.select-container').length === 0){
 			$container = $('<div class="select-container"></div>')
