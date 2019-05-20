@@ -25,7 +25,12 @@
 	</div>
 	<div class="compose" data-reference="<%= assistantHeight%>">
 		<div class="header">
-			<p class="title">{{title}}</p>
+			<p class="title" data-id="<%= id%>">
+				{{title}}
+				<% if(editable){ %>
+					<a href="/compose?id=<%= id%>&edit_sheets=true" class="modify-sheets">纠错</a>
+				<% } %>
+			</p>
 			<p class="beat">
 				<span class="beat-num">{{beatNum}}</span>
 				<span class="beat-note">{{beatMelody}}</span>

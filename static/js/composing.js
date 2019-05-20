@@ -12,7 +12,69 @@
 						'click': stop
 					}
 				},
-				errorMsg = {}
+				errorMsg = {},
+				id = parseInt($('input[type="hidden"]').val())
+	if(id){
+		showModal('loading', '加载中...')
+		sendRequest({
+			url: '/sheets',
+			method: 'GET',
+			data: {
+				id
+			}
+		}).then(res => {
+			showModal('close')
+			composeReceived(res)
+		}).catch(err => {
+			console.log(err)
+		})
+	}
+	function composeReceived(data){
+		let receiveCompose = data.compose,
+				flats = parseInt($('.flat-input').val()),
+				rowCount = Math.ceil(receiveCompose.length / num),
+				$row,
+				$container,
+				$select,
+				currNote,
+				pos
+		$compose.children('.row').remove()
+		for(let i = 0; i < rowCount; i++){
+			$row = $('<div class="row"></div>')
+			for(let j = 0; j < num; j++){
+				pos = i * num + j
+				if(!(pos < receiveCompose.length)) break;
+				$container = $('<div class="select-container"></div>')
+				if(j === num - 1){
+					$container.attr('data-completed', true)
+				}
+				currNote = receiveCompose[i * num + j]
+				if(currNote.isEmpty){
+					currNote.string = 3
+					currNote.flats = '♫'
+				}
+				if(currNote.isExtend){
+					currNote.string = receiveCompose[i * num + j - 1].string
+				}
+				if(!$select){
+					$select = _createSelect(flats)
+				} 
+				$row.append($container.append($select))
+				$container.children().hide().eq(currNote.string - 1).show().val(currNote.flats)
+			}
+			$compose.append($row)
+		}
+		$container = $('<div class="select-container"></div>').append($select)
+		if($('.row:last').children().length < num){
+			$('.row:last').append($container)
+		}else {
+			$compose.append($('<div class="row"></div>').append($container))
+		}
+		bindNewForNote($('.select-container'), $('.flat-select'))
+		
+	}
+
+
 	// 根据点击位置显示select，隐藏其他
 	function handleClick(event){
 		layerY = event.originalEvent.layerY
@@ -198,28 +260,46 @@
 	async function saveMusic(desData, comData){
 		let method = 'POST',
 				additional = {contentType: 'application/json;charset=utf-8'}
-		let desRes = await sendRequest({url: '/postDesc', method, data: desData, additional})
-		await sendRequest({url: '/postCompose', method, data: {compose: JSON.stringify(comData), music_id: desRes.id}, additional})
+		let desRes = await sendRequest({url: '/postDesc', method, data: desData}, additional)
+		await sendRequest({url: '/postCompose', method, data: {compose: JSON.stringify(comData), music_id: desRes.id}}, additional)
 		return desRes.id
 	}
 
-	// 根据品数设置option，如果页面中没有select包含框，生成一个select；如果有，重新生成select的option
-	function reCreate(val, oldV){
+	function _createSelect(val){
 		let optionHtml = '<option>♫</option><option>︶</option>', 
 				halflag = '½', 
 				selectClass = ['one-lier', 'two-lier', 'three-lier', 'four-lier'],
-				$container,
-				$select
+				selectHtml = '',
+				select
 		for(let i = 0; i <= val; i++){
 			optionHtml += `<option>${ i }</option><option>${ i } ${ halflag }</option>`
 		}
+		for(let i = 0; i < 4; i++){
+			select = `<select class="flat-select ${selectClass[i]}" data-string="${i + 1}">${optionHtml}</select>`
+			selectHtml += select
+		}
+		return selectHtml
+	}
+	// 根据品数设置option，如果页面中没有select包含框，生成一个select；如果有，重新生成select的option
+	function reCreate(val, oldV){
+		let selectHTML = _createSelect(val),
+				$container
+		// let optionHtml = '<option>♫</option><option>︶</option>', 
+		// 		halflag = '½', 
+		// 		selectClass = ['one-lier', 'two-lier', 'three-lier', 'four-lier'],
+		// 		$container,
+		// 		$select
+		// for(let i = 0; i <= val; i++){
+		// 	optionHtml += `<option>${ i }</option><option>${ i } ${ halflag }</option>`
+		// }
 		if($('.select-container').length === 0){
-			$container = $('<div class="select-container"></div>')
-			for(let i = 0; i < 4; i++){
-				$select = $('<select class="flat-select '+ selectClass[i] +'" data-string="' + (i + 1) + '"></select>')
-				$select.html(optionHtml)
-				$container.append($select)
-			}
+			// $container = $('<div class="select-container"></div>')
+			// for(let i = 0; i < 4; i++){
+			// 	$select = $('<select class="flat-select '+ selectClass[i] +'" data-string="' + (i + 1) + '"></select>')
+			// 	$select.html(optionHtml)
+			// 	$container.append($select)
+			// }
+			$container = $(`<div class="select-container">${selectHTML}</div>`)
 			$('.row').append($container)
 			bindNewForNote($container, $container.find('.flat-select'))
 			// $('.select-container').on('click', handleClick)

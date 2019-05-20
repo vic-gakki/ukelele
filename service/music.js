@@ -6,7 +6,15 @@ const show = (...args) => {
 		if(Array.isArray(passIn[0])){
 			sql = 'select ?? from ?? '
 			if(passIn[0][2]){
-				sql += ' where '
+				if(Object.prototype.toString.call(passIn[0][2]) !== "[object Object]"){
+					throw new Error('the third element must be object')
+				}
+				let obj = passIn[0][2]
+						keys = Object.keys(obj)
+				sql += ' where 1 = 1'
+				for(let i = 0; i < keys.length; i++){
+					sql += ` and ${keys[i]} = ${obj[keys[i]]} `
+				}
 			}
 			params = passIn[0]
 		}else {

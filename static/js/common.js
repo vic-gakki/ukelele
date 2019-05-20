@@ -66,18 +66,17 @@ function showModal(type, title, text){
 	}
 }
 
-function sendRequest(params){
+function sendRequest(params, additional = {}){
 	return new Promise((resolve, reject) => {
 		let {
 			url,
 			method,
-			data,
-			additional
+			data
 		} = params
 		$.ajax({
 			url,
 			method,
-			data: additional.contentType.indexOf('json') ? JSON.stringify(data) : data,
+			data: additional.contentType ? (additional.contentType.indexOf('json') ? JSON.stringify(data) : data) : data,
 			...additional,
 			success(res){
 				if(res.code !== 0){

@@ -22,11 +22,16 @@ const router = app => {
 
 	// 指定曲子的详情
 	app.get('/displaySheet', (req, res) => {
-		music.show('select ?? from ?? as a, ?? as b where a.mstatus = ? and b.sstatus = ? and a.mid = b.music_id and a.mid = ?', [['a.title', 'a.beatNum', 'a.beatMelody', 'a.title', 'a.containerWidth', 'a.seperatorColor', 'a.melodyOffset', 'a.assistantHeight', 'a.rowMargin', 'b.compose'], 'music', 'sheets', 0, 0, req.query.id])
+		let query = req.query,
+				result
+		music.show('select ?? from ?? as a, ?? as b where a.mstatus = ? and b.sstatus = ? and a.mid = b.music_id and a.mid = ?', [['a.title', 'a.beatNum', 'a.beatMelody', 'a.title', 'a.containerWidth', 'a.seperatorColor', 'a.melodyOffset', 'a.assistantHeight', 'a.rowMargin', 'b.compose'], 'music', 'sheets', 0, 0, query.id])
 		.then(results => {
 			if(!results.length) res.redirect('/home')
-			results[0].compose = JSON.parse(results[0].compose)
-			res.render('ssrCompose.html', results[0])
+			result = results[0]
+			result.compose = JSON.parse(result.compose)
+			result.id = query.id
+			if(query.admin && query.admin === 'xxv') result.editable = true
+			res.render('ssrCompose.html', result)
 		}).catch(err => {
 			console.log(err)
 		})
@@ -34,11 +39,41 @@ const router = app => {
 	
 	// 编曲页
 	app.get('/compose', (req, res) => {
-		res.render('compose.html', {
-			isCompose: true
-		})
+		let query = req.query,
+				result = {isCompose: true}
+		if(query.id && query.edit_sheets){
+			music.show('select ?? from ?? where mstatus = ? and mid = ?', [['title', 'beatNum', 'beatMelody', 'title', 'containerWidth', 'seperatorColor', 'melodyOffset', 'assistantHeight', 'rowMargin', 'relatedMaxFlats'], 'music', 0, query.id])
+			.then(results => {
+				if(!results.length) res.redirect('/home')
+				result = {...result, ...results[0]}
+				result.id = query.id
+				console.log(result)
+				res.render('compose.html', result)
+			})			
+			.catch(err => {
+				console.log(err)
+			})
+		}else {
+			res.render('compose.html', result)
+		}
 	})
 	
+	// 获取指定曲子
+	app.get('/sheets', (req, res) => {
+		let id = req.query.id
+		music.show(['*', 'sheets', {music_id: id, sstatus: 0}]).then(result => {
+			if(!result.length) return res.status(404).send('Not Found')
+				result[0].compose = JSON.parse(result[0].compose)
+			res.json({
+				code: 0,
+				message: 'ok',
+				data: result[0]
+			})
+		}).catch(err => {
+			console.log(err)
+		})
+	})
+
 	// 保存曲子描述信息
 	app.post('/postDesc', jsonParser, (req, res) => {
 		music.insert('music', req.body).then(result => {

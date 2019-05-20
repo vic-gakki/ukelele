@@ -10,34 +10,35 @@
 	<div class="compose-wrapper">
 		<div class="compose-header-wrapper">
 			<form id="musicDescription">
+				<input type="hidden" name="id" value="<%= id%>">
 				<div class="header-wrapper-first">
 					<div class="compose-title horizontal">
-						<label for="titleInput" class="required">Title: <input id="titleInput" name="title" class="title-input s-large-input" type="text"></label>
+						<label for="titleInput" class="required">Title: <input id="titleInput" name="title" class="title-input s-large-input" type="text" value="<%= title ? title : '' %>"></label>
 						<p class='error title-error'></p>
 					</div>
 					<div class="compose-beat horizontal">
-						<label for="beatInput" class="required">Beat: <input id="beatInput" name="beat" class="beat-input medium-input" type="text" placeholder="num / note"></label><p class='error beat-error'></p>
+						<label for="beatInput" class="required">Beat: <input id="beatInput" name="beat" class="beat-input medium-input" type="text" placeholder="num / note" value="<%= beatNum ? beatNum / beatMelody === 3/4 ? '' : beatNum /beatMelody : '' %>"></label><p class='error beat-error'></p>
 					</div>
 					<div class="compose-container horizontal">
-						<label for="widthInput">Container Width: <input id="widthInput" name="containerWidth" class="width-input large-input" type="text" placeholder="reference: 600~1200"></label><p class='error width-error'></p>
+						<label for="widthInput">Container Width: <input id="widthInput" name="containerWidth" class="width-input large-input" type="text" placeholder="reference: 600~1200" value="<%= containerWidth === 1000 ? '' : containerWidth %>"></label><p class='error width-error'></p>
 					</div>
 					<div class="compose-seperaotr horizontal">
-						<label for="colorInput">Seperator Color: <input id="colorInput" name="seperatorColor" class="color-input s-large-input" type="text" placeholder="rgb或rgba格式"></label><p class='error color-error'></p>
+						<label for="colorInput">Seperator Color: <input id="colorInput" name="seperatorColor" class="color-input s-large-input" type="text" placeholder="rgb或rgba格式" value="<%= seperatorColor === 'rgba(0, 0, 0, .6)' ? '' : seperatorColor %>"></label><p class='error color-error'></p>
 					</div>
 				</div>
 				<div class="header-wrapper-last">
 					<div class='count-flat horizontal'>
-						<label for="flatInput" class="required">Max Flats: <input id="flatInput" name="relatedMaxFlats" class="flat-input small-input" title="最大值:15"></label>
+						<label for="flatInput" class="required">Max Flats: <input id="flatInput" name="relatedMaxFlats" class="flat-input small-input" title="最大值:15" value="<%= relatedMaxFlats ? relatedMaxFlats : '' %>"></label>
 						<p class='error flat-error'></p>
 					</div>
 					<div class="compose-melody horizontal">
-						<label for="melodyInput">Melody Offset: <input id="melodyInput" name="melodyOffset" class="melody-input large-input" type="text" placeholder="reference: 100~200"></label><p class='error offset-error'></p>
+						<label for="melodyInput">Melody Offset: <input id="melodyInput" name="melodyOffset" class="melody-input large-input" type="text" placeholder="reference: 100~200" value="<%= melodyOffset === 100 ? '' : melodyOffset %>"></label><p class='error offset-error'></p>
 					</div>
 					<div class="compose-assistant horizontal">
-						<label for="assistantInput">Assistant Height: <input id="assistantInput" name="assistantHeight" class="assistant-input large-input" type="text" placeholder="reference: 30~60"></label><p class='error height-error'></p>
+						<label for="assistantInput">Assistant Height: <input id="assistantInput" name="assistantHeight" class="assistant-input large-input" type="text" placeholder="reference: 30~60" value="<%= assistantHeight === 30 ? '' : assistantHeight %>"></label><p class='error height-error'></p>
 					</div>
 					<div class="compose-row horizontal">
-						<label for="rowInput">Row Margin: <input id="rowInput" name="rowMargin" class="row-input large-input" type="text" placeholder="reference: 60~100"></label><p class='error margin-error'></p>
+						<label for="rowInput">Row Margin: <input id="rowInput" name="rowMargin" class="row-input large-input" type="text" placeholder="reference: 60~100" value="<%= rowMargin === 60 ? '' : rowMargin %>"></label><p class='error margin-error'></p>
 					</div>
 				</div>
 			</form>
