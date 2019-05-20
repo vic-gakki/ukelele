@@ -180,19 +180,37 @@ li:hover {
 	top: 3px;
 	left: 0;
 }
-.to-home {
+.links {
+	overflow: hidden;
+}
+.to-home-wrapper {
+	float: left;
+}
+.to-compose-wrapper {
+	float: right;
+}
+.to-home,
+.to-compose {
 	font-family: "STXingkai","KaiTi";
 	font-size: 25px;
-	padding-left: 40px;
 	position: relative;
-
 }
-.to-home
-.to-home-gesture {
+.to-home {
+	padding-left: 40px;
+}
+.to-compose {
+	padding-right: 40px;
+}
+.to-home-gesture,
+.to-compose-gesture {
 	position: absolute;
-	left: 15px;
 	top: -6px;
+}
+.to-home-gesture {
 	animation: toHome .5s linear infinite normal;
+}
+.to-compose-gesture {
+	animation: toCompose .5s linear infinite normal;
 }
 @keyframes toHome {
 	0% {left: 15px;}
@@ -202,3 +220,12 @@ li:hover {
 	80% {left: 11px;}
 	100% {left: 10px;}
 }
+@keyframes toCompose {
+	0% {right: 15px;}
+	20% {right: 14px;}
+	40% {right: 13px;}
+	60% {right: 12px;}
+	80% {right: 11px;}
+	100% {right: 10px;}
+}
+

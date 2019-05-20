@@ -11,7 +11,8 @@ const router = app => {
 	app.get('/home', (req, res) => {
 		music.show('select mid, title from music').then(result => {
 			res.render('home.html', {
-				result
+				result,
+				isHome: true
 			})
 		})
 		.catch(err => {
@@ -33,7 +34,9 @@ const router = app => {
 	
 	// 编曲页
 	app.get('/compose', (req, res) => {
-		res.render('compose.html')
+		res.render('compose.html', {
+			isCompose: true
+		})
 	})
 	
 	// 保存曲子描述信息

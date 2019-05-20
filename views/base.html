@@ -8,10 +8,21 @@
 		{{/block}}
 </head>
 <body>
-	<div class="to-home-wrapper">
-		<h1 class="to-home-content">
-			<a href="/home" class="to-home"><span class="to-home-gesture">☜</span>xxv's ukelele</a>
-		</h1>
+	<div class="links">
+		<% if(!isHome){ %>
+			<div class="to-home-wrapper">
+				<h1 class="to-home-content">
+					<a href="/home" class="to-home"><span class="to-home-gesture">☜</span>xxv's ukelele</a>
+				</h1>
+			</div>
+		<% } %>
+		<% if(!isCompose){ %>
+			<div class="to-compose-wrapper">
+				<h1 class="to-compose-content">
+					<a href="/compose" class="to-compose">compose now<span class="to-compose-gesture">☞</span></a>
+				</h1>
+			</div>
+		<% } %>
 	</div>
 	{{block 'content'}}
 	{{/block}}
