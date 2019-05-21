@@ -333,7 +333,7 @@
 	$('.flat-input').on('input change', function(event){
 		let value, type = event.type
 		if(type === 'change'){
-			let oldV = $(this).data('num')
+			let oldV = this.dataset.num
 			value = $(this).val()
 			if(!value || value > 15) return
 			if(value == oldV)return
