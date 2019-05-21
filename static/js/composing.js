@@ -14,6 +14,8 @@
 				},
 				errorMsg = {},
 				id = parseInt($('input[type="hidden"]').val())
+	
+	// 如果页面存在id，则为修改。填充曲子
 	if(id){
 		showModal('loading', '加载中...')
 		sendRequest({
@@ -23,12 +25,14 @@
 				id
 			}
 		}).then(res => {
-			showModal('close')
 			composeReceived(res)
+			showModal('close')
 		}).catch(err => {
 			console.log(err)
 		})
 	}
+
+	// 填充曲子，根据行容量和note数求  行数
 	function composeReceived(data){
 		let receiveCompose = data.compose,
 				flats = parseInt($('.flat-input').val()),
@@ -64,6 +68,8 @@
 			}
 			$compose.append($row)
 		}
+		
+		// 添加一个隐形的container，方便添加
 		$container = $('<div class="select-container"></div>').append($select)
 		if($('.row:last').children().length < num){
 			$('.row:last').append($container)
@@ -71,7 +77,6 @@
 			$compose.append($('<div class="row"></div>').append($container))
 		}
 		bindNewForNote($('.select-container'), $('.flat-select'))
-		
 	}
 
 
@@ -107,6 +112,7 @@
 		}
 	}
 
+	// 为新生成的container和select绑定事件的封装方法
 	function bindNewForNote(selectContainer, flatSelect){
 		_bindEventForNew([
 			{host: selectContainer, event: 'click', handler: handleClick},
@@ -138,6 +144,7 @@
 		})
 	}
 
+	// 右键菜单 点击添加和删除的逻辑：添加元素的后面的值都想其后一位赋值，并生成一个新的隐藏的container
 	function handleAddRemove(res){
 		let { target, operation } = res,
 				currentRowLeft = target.parent().nextAll(),
@@ -184,6 +191,7 @@
 		}
 	}
 
+	// 根据传入的参数，进行校验
 	function validate(paramArr){
 		let i = 0,
 				len = paramArr.length,
@@ -237,6 +245,7 @@
 				})
 	}
 
+	// 收集曲子的描述信息
 	function collectDescription(){
 		let result = $('#musicDescription').serializeArray(),
 				len = result.length,
@@ -257,14 +266,22 @@
 		return data
 	}
 
-	async function saveMusic(desData, comData){
+	async function oprateMusic(desData, comData){
 		let method = 'POST',
 				additional = {contentType: 'application/json;charset=utf-8'}
 		let desRes = await sendRequest({url: '/postDesc', method, data: desData}, additional)
-		await sendRequest({url: '/postCompose', method, data: {compose: JSON.stringify(comData), music_id: desRes.id}}, additional)
+		comData = {
+			compose: JSON.stringify(comData),
+			music_id: desRes.id
+		}
+		if(desData.id){
+			comData.update = true
+		}
+		await sendRequest({url: '/postCompose', method, data: comData}, additional)
 		return desRes.id
 	}
 
+	// 根据品数 生成select模板
 	function _createSelect(val){
 		let optionHtml = '<option>♫</option><option>︶</option>', 
 				halflag = '½', 
@@ -280,36 +297,22 @@
 		}
 		return selectHtml
 	}
+
+
 	// 根据品数设置option，如果页面中没有select包含框，生成一个select；如果有，重新生成select的option
 	function reCreate(val, oldV){
 		let selectHTML = _createSelect(val),
 				$container
-		// let optionHtml = '<option>♫</option><option>︶</option>', 
-		// 		halflag = '½', 
-		// 		selectClass = ['one-lier', 'two-lier', 'three-lier', 'four-lier'],
-		// 		$container,
-		// 		$select
-		// for(let i = 0; i <= val; i++){
-		// 	optionHtml += `<option>${ i }</option><option>${ i } ${ halflag }</option>`
-		// }
 		if($('.select-container').length === 0){
-			// $container = $('<div class="select-container"></div>')
-			// for(let i = 0; i < 4; i++){
-			// 	$select = $('<select class="flat-select '+ selectClass[i] +'" data-string="' + (i + 1) + '"></select>')
-			// 	$select.html(optionHtml)
-			// 	$container.append($select)
-			// }
 			$container = $(`<div class="select-container">${selectHTML}</div>`)
 			$('.row').append($container)
 			bindNewForNote($container, $container.find('.flat-select'))
-			// $('.select-container').on('click', handleClick)
-			// $('.flat-select').on('contextmenu click', handle_flat_select)
 		}else {
 			displayPrompt('#confirmBox', '调整品数可能会导致部分音符重绘，请确认此次操作！').then(res => {
-				$.each($('.flat-select'), function(index, ele){
+				$.each($('.flat-select:visible'), function(index, ele){
 					let $ele = $(ele), 
 							val = $ele.val()
-					$ele.html(optionHtml).val(val)
+					$ele.html(selectHTML).val(val)
 					if(!$ele.val()){
 						$ele.val('♫')
 					}
@@ -349,9 +352,11 @@
 			}
 		}
 	})
+
+	// 绑定提交事件
 	$('.btn-submit').on('click', function(){
 		// 1. 检测必填项
-		let omitEle, composeArr = [], notes, curr, string, flats, json, data
+		let omitEle, composeArr = [], notes, curr, string, flats, json, data, type = '保存'
 		Array.from($('.required').children('input')).some(item => {
 			if($(item).val().trim() === ''){
 				omitEle = $(item)
@@ -359,19 +364,21 @@
 			}
 		})
 		if(omitEle){
-			showModal('warning', '提示', '提交前请完成必填信息！')
+			showModal('warning', '提交前请完成必填信息！')
 			omitEle.focus()
 			return
 		}
 		if(Object.keys(errorMsg).length){
-			showModal('warning', '提示', '请校对填写格式！')
+			showModal('warning', '请校对填写格式！')
 			console.log(errorMsg)
 			return
 		}
 		notes = $('.flat-select:visible')
 		if(notes.length === 0){
-			return showModal('warning', '提示', '乐谱应至少包含一个音符')
+			return showModal('warning', '乐谱应至少包含一个音符')
 		}
+
+		// 获取数据
 		data = collectDescription()
 		$.each(notes, function(index, ele){
 			json = {}
@@ -391,10 +398,12 @@
 			}
 			composeArr.push(json)
 		})
-		showModal('loading', '发送中')
-		saveMusic(data, composeArr).then(res => {
-			showModal('success')
-			location.assign('/displaySheet?id=' + res)
+		showModal('loading', '发送中...')
+		if(id) type = '更新'
+		oprateMusic(data, composeArr).then(res => {
+			showModal('success', type + '成功', function(){
+				location.assign('/displaySheet?id=' + res)
+			})
 		}).catch(err => {
 			console.log(err)
 		})

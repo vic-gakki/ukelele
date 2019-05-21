@@ -47,7 +47,6 @@ const router = app => {
 				if(!results.length) res.redirect('/home')
 				result = {...result, ...results[0]}
 				result.id = query.id
-				console.log(result)
 				res.render('compose.html', result)
 			})			
 			.catch(err => {
@@ -76,32 +75,70 @@ const router = app => {
 
 	// 保存曲子描述信息
 	app.post('/postDesc', jsonParser, (req, res) => {
-		music.insert('music', req.body).then(result => {
-			res.json({
-				code: 0,
-				data: {
-					id: result.insertId
-				},
-				message: ''
+		let data = req.body
+		if(data.id){
+			let filter = {
+				mid: data.id
+			}
+			delete data.id
+			music.update('music', data, filter).then(result => {
+				res.json({
+					code: 0,
+					data: {
+						id: filter.mid
+					},
+					message: ''
+				})
 			})
-		}).catch(err => {
-			console.log(err)
-		})
+		}else{
+			music.insert('music', req.body).then(result => {
+				res.json({
+					code: 0,
+					data: {
+						id: result.insertId
+					},
+					message: ''
+				})
+			}).catch(err => {
+				console.log(err)
+			})
+		}
 	})
 
 	// 保存曲子音符集
 	app.post('/postCompose', jsonParser, (req, res) => {
-		music.insert('sheets', req.body).then(result => {
-			res.json({
-				code: 0,
-				data: {
-					id: result.insertId
-				},
-				message: ''
+		let data = req.body
+		if(data.update){
+			let filter = {
+				music_id: data.music_id
+			}
+			data = {
+				compose: data.compose
+			}
+			music.update('sheets', data, filter).then(result => {
+				res.json({
+					code: 0,
+					data: {
+						id: filter.music_id
+					},
+					message: ''
+				})
+			}).catch(err => {
+				console.log(err)
 			})
-		}).catch(err => {
-			console.log(err)
-		})
+		}else {
+			music.insert('sheets', req.body).then(result => {
+				res.json({
+					code: 0,
+					data: {
+						id: result.insertId
+					},
+					message: ''
+				})
+			}).catch(err => {
+				console.log(err)
+			})
+		}
 	})
 }
 module.exports = router

@@ -11,6 +11,8 @@ function displayError(container, isShow, text, isInline){
 		 $container.text('').hide()
 	}
 }
+function noop(){}
+
 function displayPrompt(container, text){
 	return new Promise((resolve, reject) => {
 		$(container).off('click').on('click', function(event){
@@ -31,39 +33,21 @@ function displayPrompt(container, text){
 		$(container).find('.prompt-text').text(text).end().fadeIn()
 	})
 }
-function showModal(type, title, text){
+function showModal(type, text, cb = noop, time = 1000){
 	let msgBox = $('#messageBox'),
-			titleBox = msgBox.children().children(':first').removeClass().text(title),
-			classList = 'message-title ',
 			timer
-	switch(type){
-		case 'loading':
-			classList += 'info-message'
-			break;
-		case 'success':
-			classList += 'success-message'
-			break;
-		case 'warning':
-			classList += 'warning-message'
-			break;
-		case 'error':
-			classList += 'error-message'
-			break;
-	}
-	titleBox.addClass(classList)
-	text = text ? text : ''
-	msgBox.children().children(':last').text(text)
 	if(type === 'close'){
-		msgBox.hide()
-	}else {
-		msgBox.show()
-		if(type !== 'loading'){
-			timer = setTimeout(function(){
-				msgBox.hide()
-				clearTimeout(timer)
-			}, 1000)
-		}
+		msgBox.find('.fa').hide().end().find('.message-content').text('').end().hide()
+		return cb()
+		
 	}
+	msgBox.find('.' + type).show().siblings().hide().end().end().find('.message-content').text(text).end().show()
+	if(type === 'loading') return
+	timer = setTimeout(function(){
+		msgBox.hide()
+		clearTimeout(timer)
+		return cb()
+	}, time)
 }
 
 function sendRequest(params, additional = {}){
@@ -80,14 +64,15 @@ function sendRequest(params, additional = {}){
 			...additional,
 			success(res){
 				if(res.code !== 0){
-					showModal('error', '出错啦', res.message)
+					showModal('fail', '出错啦!' + res.message)
 					reject(res.message)
 				}else {
 					resolve(res.data)
 				}
 			},
 			error(err){
-				showModal('error', '出错啦', err.message)
+				console.log(err)
+				showModal('fail', '出错啦!' + err.statusText)
 				reject(err)
 			}
 		})

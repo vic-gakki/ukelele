@@ -67,22 +67,3 @@
 .submit-wrapper {
 	text-align: center;
 }
-.message-title {
-	padding: 50px 0;
-  font-size: 40px;
-}
-.message-content {
-	margin-top: 20px;
-}
-.error-message {
-	color: #fde2e2;
-}
-.warning-message {
-	color: #e6a23c;
-}
-.success-message {
-	color: #67c23a;
-}
-.info-message {
-	color: #edf2fc;
-}

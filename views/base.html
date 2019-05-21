@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>{{block 'title'}}{{/block}}</title>
 		<link rel="stylesheet" type="text/css" href="/css/common.css">
+		<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 		{{block 'head'}}
 		{{/block}}
 </head>
@@ -41,8 +42,13 @@
 	</div>
 	<div class="prompt" id="messageBox">
 		<div class="prompt-content">
-			<p class="message-title">提示</p>
-			<p class="message-content">不能为空</p>
+			<p class="message-title">
+				<i class="loading fa fa-spinner fa-spin info-color"></i>
+				<i class="success fa fa-check-circle success-color"></i>
+				<i class="warning fa fa-warning warning-color"></i>
+				<i class="fail fa fa-frown-o fail-color"></i>
+			</p>
+			<p class="message-content"></p>
 		</div>
 	</div>
 		<script src="/lib/jquery-1.12.4.js"></script>

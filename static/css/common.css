@@ -229,3 +229,24 @@ li:hover {
 	100% {right: 10px;}
 }
 
+
+.fail-color {
+	color: #d82e2e;
+}
+.warning-color {
+	color: #e6a23c;
+}
+.success-color {
+	color: #67c23a;
+}
+.info-color {
+	color: #000;
+}
+.message-title {
+	padding: 60px 0;
+  font-size: 50px;
+  text-align: center;
+}
+.message-content {
+	margin-top: 20px;
+}

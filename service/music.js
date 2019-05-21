@@ -42,7 +42,19 @@ const insert = (table, data) => {
 		})
 	})
 }
+const update = (table, data, filter) => {
+	return new Promise((resolve, reject) => {
+		db.query('update ?? set ? where ?', [table, data, filter], (err, results) => {
+			if(err){
+				reject(err)
+			}else {
+				resolve(results)
+			}
+		})
+	})
+}
 module.exports = {
 	show,
-	insert
+	insert,
+	update
 }
