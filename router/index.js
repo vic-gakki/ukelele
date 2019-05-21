@@ -60,7 +60,7 @@ const router = app => {
 	// 获取指定曲子
 	app.get('/sheets', (req, res) => {
 		let id = req.query.id
-		music.show(['*', 'sheets', {music_id: id, sstatus: 0}]).then(result => {
+		music.show(['compose', 'sheets', {music_id: id, sstatus: 0}]).then(result => {
 			if(!result.length) return res.status(404).send('Not Found')
 				result[0].compose = JSON.parse(result[0].compose)
 			res.json({
