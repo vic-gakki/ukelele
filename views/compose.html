@@ -17,7 +17,7 @@
 						<p class='error title-error'></p>
 					</div>
 					<div class="compose-beat horizontal">
-						<label for="beatInput" class="required">Beat: <input id="beatInput" name="beat" class="beat-input medium-input" type="text" placeholder="num / note" value="<%= beatNum ? beatNum / beatMelody === 3/4 ? '' : beatNum + ' / ' +  beatMelody : '' %>"></label><p class='error beat-error'></p>
+						<label for="beatInput" class="required">Beat: <input id="beatInput" name="beat" class="beat-input medium-input" type="text" placeholder="num / note" value="<%= beatNum ? beatNum + ' / ' +  beatMelody : '' %>"></label><p class='error beat-error'></p>
 					</div>
 					<div class="compose-container horizontal">
 						<label for="widthInput">Container Width: <input id="widthInput" name="containerWidth" class="width-input large-input" type="text" placeholder="reference: 600~1200" value="<%= containerWidth === 1000 ? '' : containerWidth %>"></label><p class='error width-error'></p>
